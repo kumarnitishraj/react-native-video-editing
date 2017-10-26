@@ -1,0 +1,22 @@
+{
+  "name": "react-native-video-editing",
+  "version": "0.0.1",
+  "description": " Video editing/trimming/filtering library for React-Native",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kumarnitishraj/react-native-video-editing.git"
+  },
+  "keywords": [
+    "VideoEditing"
+  ],
+  "author": "“Nitish <“nitish.kr628@gmail.com”> (“https://github.com/kumarnitishraj”)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kumarnitishraj/react-native-video-editing/issues"
+  },
+  "homepage": "https://github.com/kumarnitishraj/react-native-video-editing#readme"
+}
