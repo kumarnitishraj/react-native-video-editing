@@ -3,7 +3,7 @@
 #if __has_include("RCTBridgeModule.h")
 #import "RCTBridgeModule.h"
 #else
-#import <RCTBridgeModule.h>
+#import <React/RCTBridgeModule.h>
 #endif
 
 #import <Foundation/Foundation.h>
