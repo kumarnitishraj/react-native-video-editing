@@ -1,22 +1,52 @@
 {
-  "name": "react-native-video-editing",
-  "version": "0.0.1",
-  "description": " Video editing/trimming/filtering library for React-Native",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "_from": "react-native-video-editing",
+  "_id": "react-native-video-editing@0.0.1",
+  "_inBundle": false,
+  "_integrity": "sha512-oZ8M0ABbAWXuYe7A7U5yL/ODUh8VcwdiBYntDHsaIZrENCXGdtQKLPMxMI2Nfd/LsFqsKohOV53boL4Vf2pRNw==",
+  "_location": "/react-native-video-editing",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "react-native-video-editing",
+    "name": "react-native-video-editing",
+    "escapedName": "react-native-video-editing",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
   },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-video-editing/-/react-native-video-editing-0.0.1.tgz",
+  "_shasum": "62e6749fb997cbac65ffef06c98c09274933e1a2",
+  "_spec": "react-native-video-editing",
+  "_where": "/Users/afnity_computer/Desktop/test/srctest",
+  "author": {
+    "name": "“Nitish",
+    "email": "“nitish.kr628@gmail.com”",
+    "url": "“https://github.com/kumarnitishraj”"
+  },
+  "bugs": {
+    "url": "https://github.com/kumarnitishraj/react-native-video-editing/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": " Video editing/trimming/filtering library for React-Native",
+  "homepage": "https://github.com/kumarnitishraj/react-native-video-editing#readme",
+  "keywords": [
+    "VideoEditing"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "react-native-video-editing",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kumarnitishraj/react-native-video-editing.git"
   },
-  "keywords": [
-    "VideoEditing"
-  ],
-  "author": "“Nitish <“nitish.kr628@gmail.com”> (“https://github.com/kumarnitishraj”)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/kumarnitishraj/react-native-video-editing/issues"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/kumarnitishraj/react-native-video-editing#readme"
+  "version": "0.0.1"
 }

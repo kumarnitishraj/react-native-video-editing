@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		13BE3DEE1AC21097009241FE /* RNAVEditing.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BE3DED1AC21097009241FE /* RNAVEditing.m */; };
+		8206D69A1FAC6670009853F3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8206D6991FAC6667009853F3 /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,6 +27,7 @@
 		134814201AA4EA6300B7C361 /* libRNAVEditing.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNAVEditing.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		13BE3DEC1AC21097009241FE /* RNAVEditing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAVEditing.h; sourceTree = "<group>"; };
 		13BE3DED1AC21097009241FE /* RNAVEditing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAVEditing.m; sourceTree = "<group>"; };
+		8206D6991FAC6667009853F3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8206D69A1FAC6670009853F3 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,14 +53,31 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				13BE3DEC1AC21097009241FE /* RNAVEditing.h */,
-				13BE3DED1AC21097009241FE /* RNAVEditing.m */,
+				820165CC1FAC5F8F004F5860 /* RNAVEditing */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				8206D6981FAC6667009853F3 /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
 			tabWidth = 2;
 			usesTabs = 0;
+		};
+		820165CC1FAC5F8F004F5860 /* RNAVEditing */ = {
+			isa = PBXGroup;
+			children = (
+				13BE3DED1AC21097009241FE /* RNAVEditing.m */,
+				13BE3DEC1AC21097009241FE /* RNAVEditing.h */,
+			);
+			name = RNAVEditing;
+			sourceTree = "<group>";
+		};
+		8206D6981FAC6667009853F3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8206D6991FAC6667009853F3 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 

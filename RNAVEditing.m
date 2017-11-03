@@ -75,6 +75,10 @@ RCT_EXPORT_METHOD(audioVideoSpeedFilter:(NSDictionary *)videoObject
     duration = CMTimeMakeWithSeconds(a_durarion / 2.0, 600);
     filterVideoMotion = CMTimeMake(videoDuration.value/videoScaleFactor, videoDuration.timescale);
   }
+  else if ([videoObject[@"motion"] intValue] == 4){
+    duration = CMTimeMakeWithSeconds(a_durarion / 4.0, 600);
+    filterVideoMotion = CMTimeMake(videoDuration.value/videoScaleFactor, videoDuration.timescale);
+  }
   
   //// ----------------------------- Filter Time -----------------------
   [a_compositionVideoTrack scaleTimeRange:CMTimeRangeMake(kCMTimeZero, videoDuration)
@@ -174,10 +178,40 @@ RCT_EXPORT_METHOD(videoTriming:(NSDictionary *)videoObject
     [[NSFileManager defaultManager] removeItemAtPath:outputFilePath error:nil];
   
   //Now create an AVAssetExportSession object that will save your final video at specified path.
-  AVAssetExportSession* _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetHighestQuality];
-  _assetExport.outputFileType = @"com.apple.quicktime-movie";
+  AVAssetExportSession* _assetExport;
+  
+  switch([videoObject[@"videoQuality"] intValue]){
+    case 1  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetLowQuality];
+      break;
+    case 2  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetMediumQuality];
+      break;
+    case 3  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetHighestQuality];
+      break;
+    case 4  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPreset1280x720];
+      break;
+    case 5  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPreset960x540];
+      break;
+    case 6  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPreset640x480];
+      break;
+      
+      /* you can have any number of case statements */
+    default : /* Optional */
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetHighestQuality];
+  }
+  _assetExport.outputFileType = AVFileTypeQuickTimeMovie;
   _assetExport.outputURL = outputFileUrl;
-  //_assetExport.videoComposition = videoComposition;
+  
+  if([videoObject[@"videoFileLimit"] intValue] != 0){
+    _assetExport.fileLengthLimit = [videoObject[@"videoFileLimit"] intValue];
+  }
+  
+  
   
   [_assetExport exportAsynchronouslyWithCompletionHandler:
    ^(void) {
@@ -189,7 +223,13 @@ RCT_EXPORT_METHOD(videoTriming:(NSDictionary *)videoObject
    ];
 }
 
-
+//RCT_EXPORT_METHOD(transcodeItem:(NSDictionary *)videoObject){
+//  AVURLAsset *videoAsset = [self uriSource:videoObject];
+//  // see if it's possible to export at the requested quality
+//  NSArray *compatiblePresets = [AVAssetExportSession
+//                                exportPresetsCompatibleWithAsset:videoAsset];
+//  
+//}
 
 RCT_EXPORT_METHOD(deleteItem:(NSDictionary *)videoObject){
   
