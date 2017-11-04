@@ -32,7 +32,7 @@ const VideoEditing = {
     }
 
     const isNetwork = !!(uri && uri.match(/^https?:/));
-    const isAsset = !!(uri && uri.match(/^(assets-library|file|content|ms-appx|ms-appdata):/));
+    const isAsset = !!(uri && uri.match(/^(assets-library|file|content|ms-appx|ms-appdata|ipod-library):/));
     const srcObject = {
       isNetwork:isNetwork,
       isAsset:isAsset,
