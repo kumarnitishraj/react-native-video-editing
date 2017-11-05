@@ -92,5 +92,7 @@ videoQuality | HIGH_QUALITY | LOW_QUALITY, MEDIUM_QUALITY, HIGH_QUALITY, QUALITY
 duration | video duration | 0.0 - ...  (in second )
 VideoStartTime | 0.0 | Give Starting point. It should be in second.
 
+## License
 
+[MIT License](http://opensource.org/licenses/mit-license.html).
 
