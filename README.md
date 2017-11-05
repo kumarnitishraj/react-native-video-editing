@@ -57,36 +57,3 @@ VideoEditing.videoMotionFilter(option,
 
       });
 ```
-
-
-
-
-### Options
-
-option | iOS  | Android | Info
------- | ---- | ------- | ----
-title | OK | OK | Specify `null` or empty string to remove the title
-cancelButtonTitle | OK | OK |
-customButtons | OK | OK | An array containing objects with the name and title of buttons
-videoQuality | OK |  OK | 'low', 'medium', or 'high' on iOS, 'low' or 'high' on Android
-durationLimit | OK | OK | Max video trimming time, in seconds
-noData | OK | OK | If true, disables the base64 `data` field from being generated (greatly improves performance on large videos)
-storageOptions | OK | OK | If this key is provided, the video will get saved in the Documents directory on iOS, and the Videos directory on Android (rather than a temporary directory)
-storageOptions.path | OK | - | If set, will save video at /Documents/[path] rather than the root
-storageOptions.cameraRoll | OK | - | If true, the trimmed video will be saved to the iOS Camera roll.
-
-### The Response Object
-
-key | iOS | Android | Description
------- | ---- | ------- | ----------------------
-didCancel | OK | OK | Informs you if the user cancelled the process
-error | OK | OK | Contains an error message, if there is one
-data | OK | OK | The base64 encoded video data
-uri | OK | OK | The uri to the local file asset on the device
-origURL | OK | - | The URL of the original asset in library, if it exists
-width | OK | OK | Video dimensions
-height | OK | OK | Video dimensions
-fileSize | OK | OK | The file size
-type | - | OK | The file type
-fileName | - | OK | The file name
-path | - | OK | The file path
