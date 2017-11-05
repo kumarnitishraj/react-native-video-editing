@@ -32,11 +32,11 @@ var VideoEditing = require('react-native-video-editing');
 const option = {
       video: {
         source: require('../videoplayer/mode.mp4'),
-        motion: VideoEditing.FILTER_SPEED_2X_FAST,
       },
       audio: {
         source:require('../videoplayer/new.mp3')
       },
+      motion: VideoEditing.FILTER_SPEED_2X_FAST,
       videoQuality: VideoEditing.QUALITY_960x540,
       audioMatched:false,
     }
