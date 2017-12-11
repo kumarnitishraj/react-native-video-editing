@@ -46,16 +46,11 @@ const option = {
  * The second and third arg is the callback which sends Error and Sucess.
  */
 
-VideoEditing.videoMotionFilter(option,
-      (error) => {
-        console.log('Error: ' + results);
-      },
-      (results, file) => {
-        console.log('Success : ' + results + " " + file);
-
-        //navigate('Video', { uri: file })
-
-      });
+VideoEditing.videoMotionFilter(option).then((newSource)=>{
+      console.log('Success : ' + newSource);
+    }).catch((error)=>{
+      console.log('Error: ' + error);
+    })
 ```
 
 
