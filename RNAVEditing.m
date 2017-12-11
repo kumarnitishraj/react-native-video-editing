@@ -38,32 +38,26 @@ RCT_EXPORT_METHOD(audioVideoSpeedFilter:(NSDictionary *)videoObject
   }else{
     duration = CMTimeMakeWithSeconds([videoObject[@"duration"] doubleValue], 600);
   }
-    //slow down whole video by 2.0
+  //slow down whole video by 2.0
   double videoScaleFactor = 2.0;
   CMTime videoDuration = videoAsset.duration;
+  CMTime audioDuration = duration;
   
   
   
-
+  
   //Now we are creating the second AVMutableCompositionTrack containing our video and add it to our AVMutableComposition object
   
   AVAssetTrack *videoAssetTrack = [[videoAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
   AVMutableCompositionTrack *a_compositionVideoTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
   
   
-
+  
   CMTime start = CMTimeMakeWithSeconds([videoObject[@"VideoStartTime"] doubleValue], 600);
   CMTimeRange videoRange = CMTimeRangeMake(start, duration);
   
   [a_compositionVideoTrack insertTimeRange:videoRange ofTrack:[[videoAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
   
-  //Now we are creating the first AVMutableCompositionTrack containing our audio and add it to our AVMutableComposition object.
-  AVURLAsset *audioAsset = [self uriSource:audioObject];
-  start = CMTimeMakeWithSeconds([audioObject[@"AudioStartTime"] doubleValue], 600);
-  CMTimeRange AudioRange = CMTimeRangeMake(start, duration);
-  AVMutableCompositionTrack *b_compositionAudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-  [b_compositionAudioTrack insertTimeRange:AudioRange ofTrack:[[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
-  /// ---------------------------- Filter Time ----------------------
   double a_durarion = CMTimeGetSeconds(duration);
   
   CMTime filterVideoMotion = CMTimeMake(videoDuration.value, videoDuration.timescale);
@@ -77,40 +71,80 @@ RCT_EXPORT_METHOD(audioVideoSpeedFilter:(NSDictionary *)videoObject
   }
   else if ([videoObject[@"motion"] intValue] == 4){
     duration = CMTimeMakeWithSeconds(a_durarion / 4.0, 600);
-    filterVideoMotion = CMTimeMake(videoDuration.value/videoScaleFactor, videoDuration.timescale);
+    filterVideoMotion = CMTimeMake(videoDuration.value/4.0, videoDuration.timescale);
   }
   
   //// ----------------------------- Filter Time -----------------------
   [a_compositionVideoTrack scaleTimeRange:CMTimeRangeMake(kCMTimeZero, videoDuration)
-                                    toDuration:filterVideoMotion];
+                               toDuration:filterVideoMotion];
   
   [a_compositionVideoTrack setPreferredTransform:videoAssetTrack.preferredTransform];
   
+  //Now we are creating the first AVMutableCompositionTrack containing our audio and add it to our AVMutableComposition object.
+  AVURLAsset *audioAsset = [self uriSource:audioObject];
+  start = CMTimeMakeWithSeconds([audioObject[@"AudioStartTime"] doubleValue], 600);
+  
+  AVMutableCompositionTrack *b_compositionAudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
   
   
-  //----------------  Audio Section -------------
   
-  
-  //audioMatched
+  //audioMatched audioDuration
   if ([videoObject[@"audioMatched"] boolValue]){
+    
+    CMTimeRange AudioRange = CMTimeRangeMake(start, audioDuration);
+    [b_compositionAudioTrack insertTimeRange:AudioRange ofTrack:[[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
     [b_compositionAudioTrack scaleTimeRange:CMTimeRangeMake(kCMTimeZero, videoDuration)
                                  toDuration:filterVideoMotion];
+  }else{
+    CMTimeRange AudioRange = CMTimeRangeMake(start, duration);
+    [b_compositionAudioTrack insertTimeRange:AudioRange ofTrack:[[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
   }
   
   
   //decide the path where you want to store the final video created with audio and video merge.
   NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
   NSString *docsDir = [dirPaths objectAtIndex:0];
-  NSString *outputFilePath = [docsDir stringByAppendingPathComponent:[NSString stringWithFormat:@"FinalVideo1.mov"]];
+  NSString *outputFilePath = [docsDir stringByAppendingPathComponent:[NSString stringWithFormat:@"Groups.mp4"]];
   NSURL *outputFileUrl = [NSURL fileURLWithPath:outputFilePath];
   if ([[NSFileManager defaultManager] fileExistsAtPath:outputFilePath])
     [[NSFileManager defaultManager] removeItemAtPath:outputFilePath error:nil];
   
   //Now create an AVAssetExportSession object that will save your final video at specified path.
-  AVAssetExportSession* _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetHighestQuality];
+  AVAssetExportSession* _assetExport;
+  
+  switch([videoObject[@"videoQuality"] intValue]){
+    case 1  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetLowQuality];
+      break;
+    case 2  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetMediumQuality];
+      break;
+    case 3  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetHighestQuality];
+      break;
+    case 4  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPreset1280x720];
+      break;
+    case 5  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPreset960x540];
+      break;
+    case 6  :
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPreset640x480];
+      break;
+      
+      /* you can have any number of case statements */
+    default : /* Optional */
+      _assetExport = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPresetHighestQuality];
+  }
+  
+  //Now create an AVAssetExportSession object that will save your final video at specified path.
+  
   _assetExport.outputFileType = @"com.apple.quicktime-movie";
   _assetExport.outputURL = outputFileUrl;
   //_assetExport.videoComposition = videoComposition;
+  if([videoObject[@"videoFileLimit"] intValue] != 0){
+    _assetExport.fileLengthLimit = [videoObject[@"videoFileLimit"] intValue];
+  }
   
   [_assetExport exportAsynchronouslyWithCompletionHandler:
    ^(void) {
@@ -130,7 +164,7 @@ RCT_EXPORT_METHOD(videoTriming:(NSDictionary *)videoObject
   
   NSLog(@"%@ %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
   
- 
+  
   AVURLAsset *videoAsset = [self uriSource:videoObject];
   
   CMTime duration;
@@ -157,7 +191,7 @@ RCT_EXPORT_METHOD(videoTriming:(NSDictionary *)videoObject
   //Now we are creating the first AVMutableCompositionTrack containing our audio and add it to our AVMutableComposition object.
   AVMutableCompositionTrack *b_compositionAudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
   [b_compositionAudioTrack insertTimeRange:AudioRange ofTrack:[[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
-
+  
   
   //Now we are creating the second AVMutableCompositionTrack containing our video and add it to our AVMutableComposition object.
   AVAssetTrack *videoAssetTrack = [[videoAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
@@ -166,13 +200,13 @@ RCT_EXPORT_METHOD(videoTriming:(NSDictionary *)videoObject
   
   [a_compositionVideoTrack setPreferredTransform:videoAssetTrack.preferredTransform];
   
-
- 
+  
+  
   
   //decide the path where you want to store the final video created with audio and video merge.
   NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
   NSString *docsDir = [dirPaths objectAtIndex:0];
-  NSString *outputFilePath = [docsDir stringByAppendingPathComponent:[NSString stringWithFormat:@"FinalVideo1.mov"]];
+  NSString *outputFilePath = [docsDir stringByAppendingPathComponent:[NSString stringWithFormat:@"Groups.mp4"]];
   NSURL *outputFileUrl = [NSURL fileURLWithPath:outputFilePath];
   if ([[NSFileManager defaultManager] fileExistsAtPath:outputFilePath])
     [[NSFileManager defaultManager] removeItemAtPath:outputFilePath error:nil];
@@ -228,7 +262,7 @@ RCT_EXPORT_METHOD(videoTriming:(NSDictionary *)videoObject
 //  // see if it's possible to export at the requested quality
 //  NSArray *compatiblePresets = [AVAssetExportSession
 //                                exportPresetsCompatibleWithAsset:videoAsset];
-//  
+//
 //}
 
 RCT_EXPORT_METHOD(deleteItem:(NSDictionary *)videoObject){
