@@ -1,7 +1,5 @@
 # reacc-native-video-editing
 
-## NOTE: This library is currently in a work in progress state.
-
 React Native module for mix audio and video with speed filter,trim video and speed Filter For IOS only.
 
 ## Install
