@@ -7,7 +7,6 @@
  */
 'use strict';
 import { NativeModules } from 'react-native';
-//var RNAVEditing = require('react-native').NativeModules.RNAVEditing;
 var resolveAssetSource = require("react-native/Libraries/Image/resolveAssetSource");
 
 const RNAVEditing = NativeModules.RNAVEditing;
@@ -49,7 +48,7 @@ const VideoEditing = {
     }
     return 1024*1024*limit;
   },
-  MergeAudioVideo: function(option, onError, onSucess) {
+  MergeAudioVideo: function(option) {
     /* --- Getting Audio Video Object form Option --- */
     const video_object = this.getVideoObject(option);
     const audio_object = this.getAudioObject(option);
@@ -73,6 +72,17 @@ const VideoEditing = {
       AudioStartTime:0.0,
     })
 
+    return new Promise((resolve, reject)=>{
+        RNAVEditing.videoTriming(videoObject, audioObject,
+          (onError)=>{
+          reject(onError)
+        },
+        (results, file) => {
+              console.log(file);
+              resolve(file)
+            }
+      );
+      })
     return RNAVEditing.videoTriming(videoObject, audioObject,
       (onError)=>{
       onError(onError)
@@ -82,7 +92,7 @@ const VideoEditing = {
         }
   );
   },
-  TrimAudioVideo: function(option, onError, onSucess)  {
+  TrimAudioVideo: function(option)  {
       const video_object = this.getVideoObject(option);
       //console.log(videoObject);
       const audio_object = this.getAudioObject(option);
@@ -109,14 +119,18 @@ const VideoEditing = {
         AudioStartTime:this.startTime(audio_object.startTime),
       })
 
-      return RNAVEditing.videoTriming(videoObject, audioObject,
-        (onError)=>{
-        onError(onError)
-      },
-      (results, file) => {
-            onSucess(results,file)
-          }
-    );
+      return new Promise((resolve, reject)=>{
+        RNAVEditing.videoTriming(videoObject, audioObject,
+          (onError)=>{
+          reject(onError)
+        },
+        (results, file) => {
+              console.log(file);
+              resolve(file)
+            }
+      );
+      })
+      
   },
   getVideoObject:function(option){
     return option.video;
@@ -133,7 +147,7 @@ const VideoEditing = {
       return audio;
     }
   },
-  videoMotionFilter: function(option, onError, onSucess)  {
+  videoMotionFilter: function(option)  {
 
     const video_object = this.getVideoObject(option);
     //console.log(videoObject);
@@ -163,16 +177,18 @@ const VideoEditing = {
       Object.assign(audioObject,{
         AudioStartTime:this.startTime(audio_object.startTime),
       })
-      console.log(videoObject);
-      console.log(audioObject);
-      return RNAVEditing.audioVideoSpeedFilter(videoObject, audioObject,
-        (onError)=>{
-        onError(onError)
-      },
-      (results, file) => {
-            onSucess(results,file)
-          }
-    );
+      return new Promise((resolve, reject)=>{
+        RNAVEditing.audioVideoSpeedFilter(videoObject, audioObject,
+          (onError)=>{
+          reject(onError)
+        },
+        (results, file) => {
+              console.log(file);
+              resolve(file)
+            }
+      );
+      })
+      
   },
   duration: function(videoDuration = 0.0, audioDuration = 0.0) {
     let duration = 0.0;
