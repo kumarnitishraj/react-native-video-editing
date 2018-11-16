@@ -78,19 +78,10 @@ const VideoEditing = {
           reject(onError)
         },
         (results, file) => {
-              console.log(file);
               resolve(file)
             }
       );
       })
-    return RNAVEditing.videoTriming(videoObject, audioObject,
-      (onError)=>{
-      onError(onError)
-    },
-    (results, file) => {
-          onSucess(results,file)
-        }
-  );
   },
   TrimAudioVideo: function(option)  {
       const video_object = this.getVideoObject(option);
