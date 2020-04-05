@@ -206,7 +206,9 @@ RCT_EXPORT_METHOD(videoTriming:(NSDictionary *)videoObject
   //decide the path where you want to store the final video created with audio and video merge.
   NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
   NSString *docsDir = [dirPaths objectAtIndex:0];
-  NSString *outputFilePath = [docsDir stringByAppendingPathComponent:[NSString stringWithFormat:@"Groups.mp4"]];
+  NSString *musicId = audioObject[@"musicId"];
+  NSString *musicAndAudioGroup = @"video_and_audio_group.mp4";
+  NSString *outputFilePath = [docsDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%@", musicId, musicAndAudioGroup]];
   NSURL *outputFileUrl = [NSURL fileURLWithPath:outputFilePath];
   if ([[NSFileManager defaultManager] fileExistsAtPath:outputFilePath])
     [[NSFileManager defaultManager] removeItemAtPath:outputFilePath error:nil];
@@ -302,28 +304,8 @@ RCT_EXPORT_METHOD(deleteItem:(NSDictionary *)videoObject){
   NSURL *outputURL;
   if(session.status == AVAssetExportSessionStatusCompleted){
     outputURL = session.outputURL;
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:outputURL]) {
-      [library writeVideoAtPathToSavedPhotosAlbum:outputURL
-                                  completionBlock:^(NSURL *assetURL, NSError *error){
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                      if (error) {
-                                        NSLog(@"%@",error);
-                                        failureCallback(@[error]);
-                                      }else{
-                                        NSLog(@"%@",outputURL);
-                                        NSLog(@"VIdeo has been saved");
-                                        successCallback(@[@"merge video complete", outputURL.absoluteString]);
-                                        
-                                        //[self loadMoviePlayer:outputURL];
-                                      }
-                                    });
-                                  }];
-      NSLog(@"%@",outputURL);
-    }
+    successCallback(@[@"merge video complete", outputURL.absoluteString]);
   }
-  
-  
 }
 
 

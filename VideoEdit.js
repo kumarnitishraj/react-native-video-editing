@@ -70,6 +70,7 @@ const VideoEditing = {
     let audioObject = this.urlFilter(audio_object.source);
     Object.assign(audioObject,{
       AudioStartTime:0.0,
+      musicId: audio_object.musicId
     })
 
     return new Promise((resolve, reject)=>{
